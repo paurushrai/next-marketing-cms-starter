@@ -2,10 +2,43 @@ import type { Block, CollectionConfig } from "payload";
 
 import { PAGES_INDEX_TAG, pageTag } from "@/lib/cms";
 
-/** Hero block — mirrors the `hero` type handled by the block renderer. */
+/*
+ * Composable content blocks. Each maps to a renderer in
+ * `components/blocks/block-renderer.tsx` (block `slug` → `type`). Add a block
+ * here and its renderer there to extend what editors can compose.
+ */
 const Hero: Block = {
   slug: "hero",
-  fields: [{ name: "heading", type: "text", required: true }],
+  fields: [
+    { name: "heading", type: "text", required: true },
+    { name: "subheading", type: "textarea" },
+  ],
+};
+
+const Stats: Block = {
+  slug: "stats",
+  labels: { singular: "Stats", plural: "Stats" },
+  fields: [
+    {
+      name: "items",
+      type: "array",
+      minRows: 1,
+      fields: [
+        { name: "value", type: "text", required: true },
+        { name: "label", type: "text", required: true },
+      ],
+    },
+  ],
+};
+
+const Cta: Block = {
+  slug: "cta",
+  labels: { singular: "Call to action", plural: "Calls to action" },
+  fields: [
+    { name: "heading", type: "text", required: true },
+    { name: "buttonLabel", type: "text", required: true },
+    { name: "buttonHref", type: "text", required: true },
+  ],
 };
 
 /**
@@ -62,7 +95,7 @@ export const Pages: CollectionConfig = {
         description: "Prerender at build time. Use for top landing pages.",
       },
     },
-    { name: "layout", type: "blocks", blocks: [Hero] },
+    { name: "layout", type: "blocks", blocks: [Hero, Stats, Cta] },
   ],
 };
 

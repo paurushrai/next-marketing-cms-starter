@@ -47,8 +47,9 @@ export default async function ContentPage({
   if (!page) {
     notFound();
   }
+  // Blocks own their own layout (Container + spacing), so render them full-width.
   return (
-    <main className="mx-auto max-w-5xl px-6 py-24">
+    <main>
       <BlockRenderer blocks={page.blocks} />
     </main>
   );
