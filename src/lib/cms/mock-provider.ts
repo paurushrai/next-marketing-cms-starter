@@ -14,13 +14,37 @@ const PAGES: Record<string, ContentPage> = {
     slug: "example-page",
     seo: {
       title: "Example CMS Page",
-      description: "A placeholder page served by the mock CMS provider.",
+      description: "A placeholder page composed of CMS blocks.",
     },
     blocks: [
       {
         id: "hero-1",
         type: "hero",
-        data: { heading: "Example CMS Page" },
+        data: {
+          heading: "Everything here is CMS-driven",
+          subheading:
+            "This page is composed of blocks — hero, stats, and a call to action — all editable in the CMS.",
+        },
+      },
+      {
+        id: "stats-1",
+        type: "stats",
+        data: {
+          items: [
+            { value: "3,500+", label: "Pre-built tests" },
+            { value: "100+", label: "ATS integrations" },
+            { value: "55%", label: "Faster time-to-hire" },
+          ],
+        },
+      },
+      {
+        id: "cta-1",
+        type: "cta",
+        data: {
+          heading: "Ready to see it in action?",
+          buttonLabel: "Get started",
+          buttonHref: "/contact",
+        },
       },
     ],
     updatedAt: FIXED_TIMESTAMP,
