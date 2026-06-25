@@ -1,0 +1,23 @@
+# Local MongoDB for Payload CMS.
+#
+# Data is persisted OUTSIDE the repo (defaults to ../data/personal, i.e. a
+# sibling of this project) so it survives `git clean` and never gets committed.
+# Override the location with MONGO_DATA_DIR.
+#
+#   docker compose up -d        # start
+#   docker compose down         # stop (data persists)
+services:
+  mongo:
+    image: mongo:7
+    container_name: marketing-cms-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ${MONGO_DATA_DIR:-../data/personal}:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s

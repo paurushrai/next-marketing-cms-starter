@@ -1,18 +1,19 @@
 import { cacheLife, cacheTag } from "next/cache";
 
 import { mockProvider } from "./mock-provider";
-// Payload-backed provider. Switch to it once DATABASE_URI is configured:
-//   import { payloadProvider } from "./payload-provider";
-//   const provider: CmsProvider = payloadProvider;
 import type { CmsProvider } from "./provider";
 import type { ContentPage, SlugRef } from "./types";
 
 /**
- * The active CMS provider. Swap this single line to migrate vendors — the
- * rest of the app reads through the functions below, never the provider.
- * Defaults to the zero-config mock so the template builds without a database.
+ * Active CMS provider, resolved once per process: Payload when DATABASE_URI is
+ * set, otherwise the zero-config mock. Payload is imported lazily so the app
+ * still builds and tests with no database (and without bundling Payload).
  */
-const provider: CmsProvider = mockProvider;
+const providerPromise: Promise<CmsProvider> = process.env.DATABASE_URI
+  ? import("./payload-provider").then((m) => m.payloadProvider)
+  : Promise.resolve(mockProvider);
+
+const getProvider = (): Promise<CmsProvider> => providerPromise;
 
 /** Cache tag for a single page; used for targeted on-demand revalidation. */
 export const pageTag = (slug: string): string => `page:${slug}`;
@@ -29,6 +30,7 @@ export async function getPage(slug: string): Promise<ContentPage | null> {
   "use cache";
   cacheTag(pageTag(slug));
   cacheLife("days");
+  const provider = await getProvider();
   return provider.getPage(slug);
 }
 
@@ -37,6 +39,7 @@ export async function getPrioritySlugs(): Promise<SlugRef[]> {
   "use cache";
   cacheTag(PAGES_INDEX_TAG);
   cacheLife("hours");
+  const provider = await getProvider();
   return provider.getPrioritySlugs();
 }
 
@@ -48,6 +51,7 @@ export async function getSlugPage(
   "use cache";
   cacheTag(PAGES_INDEX_TAG);
   cacheLife("hours");
+  const provider = await getProvider();
   return provider.getSlugPage(page, pageSize);
 }
 
@@ -56,5 +60,6 @@ export async function getTotalCount(): Promise<number> {
   "use cache";
   cacheTag(PAGES_INDEX_TAG);
   cacheLife("hours");
+  const provider = await getProvider();
   return provider.getTotalCount();
 }

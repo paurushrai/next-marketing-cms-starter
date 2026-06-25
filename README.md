@@ -13,7 +13,7 @@ times or locking you to a single CMS.
 | --- | --- |
 | **Scale to 20k+ pages** | Catch-all CMS route prerenders only priority slugs; the long tail renders on first request and caches (ISR / Partial Prerendering). Build time stays flat. |
 | **Per-page freshness, no redeploys** | `/api/revalidate` webhook invalidates a single page's cache tag via `revalidateTag(tag, "max")`. |
-| **CMS included, no lock-in** | **Payload CMS** ships embedded (admin at `/admin`, MongoDB) behind a provider-agnostic `CmsProvider` interface. A zero-config in-memory mock is active by default so it builds with no database; flip one line to switch to Payload. Swap to any other CMS by implementing the same interface. |
+| **CMS included, no lock-in** | **Payload CMS** ships embedded (admin at `/admin`, MongoDB) behind a provider-agnostic `CmsProvider` interface. A zero-config in-memory mock runs with no database; set `DATABASE_URI` and the app switches to Payload automatically. Swap to any other CMS by implementing the same interface. |
 | **Sitemaps at scale** | Sharded via `generateSitemaps` (50k URLs/file — Google's cap). |
 | **Theming** | Two-tier OKLCH design tokens (primitives → semantic roles → Tailwind), light/dark via `next-themes`. Re-skin by swapping one ramp. |
 | **Confidence** | Vitest unit/integration tests + a reusable CMS provider contract suite. CI gates lint, types, tests, and build on every PR. |
@@ -23,10 +23,13 @@ times or locking you to a single CMS.
 ```bash
 pnpm install
 cp .env.example .env.local   # then fill in the secrets
+docker compose up -d         # optional: local MongoDB for Payload CMS
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Requires Node `>=20.9`.
+Open [http://localhost:3000](http://localhost:3000) (and `/admin` for the CMS).
+Requires Node `>=20.9`. Without `DATABASE_URI`/Docker, the app runs on the mock
+content provider — see [docs/cms.md](./docs/cms.md).
 
 ## Scripts
 

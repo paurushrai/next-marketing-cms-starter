@@ -42,10 +42,10 @@ jobs:
         run: pnpm build
         env:
           NEXT_PUBLIC_SITE_URL: https://example.com
-          # Payload reads these at config load. The build never connects to the
-          # database; the embedded admin connects lazily at request time.
+          # No DATABASE_URI in CI: the app falls back to the mock provider, so
+          # the build needs no database. PAYLOAD_SECRET satisfies config load
+          # for the embedded admin routes.
           PAYLOAD_SECRET: ci-build-secret
-          DATABASE_URI: mongodb://127.0.0.1/ci
 
   e2e:
     name: E2E (Playwright)
@@ -71,10 +71,9 @@ jobs:
       - name: Run E2E tests
         run: pnpm e2e
         env:
-          # E2E exercises only the public site (no /admin), so no live DB is
-          # needed; these satisfy Payload's config load when the dev server boots.
+          # No DATABASE_URI: E2E runs against the mock provider (no live DB).
+          # PAYLOAD_SECRET satisfies Payload's config load when dev boots.
           PAYLOAD_SECRET: ci-e2e-secret
-          DATABASE_URI: mongodb://127.0.0.1/ci
 
       - name: Upload report
         if: ${{ !cancelled() }}
