@@ -1,11 +1,12 @@
+import { Container } from "@/components/ui/container";
 import { siteConfig } from "@/config/site";
 
 export function Footer() {
   return (
-    <footer className="border-t">
-      <div className="mx-auto max-w-5xl px-6 py-8 text-sm text-gray-500">
+    <footer className="border-t border-border">
+      <Container className="py-8 text-sm text-muted-foreground">
         {siteConfig.name}
-      </div>
+      </Container>
     </footer>
   );
 }
