@@ -6,23 +6,27 @@ The template ships with **Payload CMS** embedded in the same Next.js app
 It stays decoupled via the app's [`CmsProvider`](../src/lib/cms/provider.ts)
 interface: the front-end reads through that interface, and `payloadProvider`
 ([payload-provider.ts](../src/lib/cms/payload-provider.ts)) is one
-implementation. The mock provider is active by default so the app builds and
-tests with **zero database**.
+implementation. **Provider selection is automatic** — Payload is used when
+`DATABASE_URI` is set, otherwise the zero-config mock, so the app builds and
+tests with **no database**.
 
-## Setup
+## Local setup
 
-1. Set env (see [`.env.example`](../.env.example)):
+1. **Start MongoDB** (Docker). Data persists outside the repo (defaults to
+   `../data/personal`; override with `MONGO_DATA_DIR`):
+   ```bash
+   docker compose up -d        # docker compose down to stop; data persists
+   ```
+2. **Set env** in `.env.local` (see [`.env.example`](../.env.example)):
    ```bash
    PAYLOAD_SECRET="$(openssl rand -base64 32)"
-   DATABASE_URI="mongodb://127.0.0.1/marketing-cms"   # local or Atlas
+   DATABASE_URI="mongodb://127.0.0.1:27017/marketing-cms"
    ```
-2. Activate the Payload provider in [`src/lib/cms/index.ts`](../src/lib/cms/index.ts):
-   ```ts
-   import { payloadProvider } from "./payload-provider";
-   const provider: CmsProvider = payloadProvider;
-   ```
+   That's it — setting `DATABASE_URI` switches the app onto Payload; no code change.
 3. `pnpm dev`, open `/admin`, create the first admin user, add a **Page**
    (set a `slug` like `company/careers`; tick **priority** to prerender it).
+
+> CI and `docker`-less setups leave `DATABASE_URI` unset and run on the mock.
 
 ## How it maps
 
