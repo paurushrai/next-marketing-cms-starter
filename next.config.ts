@@ -1,3 +1,4 @@
+import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -6,4 +7,5 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
 };
 
-export default nextConfig;
+// withPayload mounts the embedded admin and API under the (payload) route group.
+export default withPayload(nextConfig);

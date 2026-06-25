@@ -1,12 +1,16 @@
 import { cacheLife, cacheTag } from "next/cache";
 
 import { mockProvider } from "./mock-provider";
+// Payload-backed provider. Switch to it once DATABASE_URI is configured:
+//   import { payloadProvider } from "./payload-provider";
+//   const provider: CmsProvider = payloadProvider;
 import type { CmsProvider } from "./provider";
 import type { ContentPage, SlugRef } from "./types";
 
 /**
  * The active CMS provider. Swap this single line to migrate vendors — the
  * rest of the app reads through the functions below, never the provider.
+ * Defaults to the zero-config mock so the template builds without a database.
  */
 const provider: CmsProvider = mockProvider;
 
