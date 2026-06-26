@@ -107,14 +107,12 @@ CMS's dependency tree (e.g. `undici`, `dompurify`, `postcss`) and are
 force-patched via `pnpm.overrides` in [`package.json`](./package.json) without
 crossing major versions. When an upstream Payload release ships the fix, drop
 the matching override and re-run `pnpm audit`. CI gates lint, types, tests, and
-build on every PR.
+build on every PR, and fails on any high/critical advisory via `pnpm audit`.
 
-Dependencies (npm and GitHub Actions) are kept current by
-[Renovate](https://docs.renovatebot.com) — see [`renovate.json`](./renovate.json).
-React and its `@types` are grouped so they bump atomically, and Payload's
-packages move as one. Install the
-[Renovate GitHub App](https://github.com/apps/renovate) on the repo to activate
-it.
+GitHub Actions are kept current by Dependabot. npm version bumps are manual
+(`pnpm update` / `pnpm outdated`) — Dependabot's npm mirror is too stale to
+resolve this stack, and the CI `pnpm audit` gate covers the security case it
+would otherwise serve.
 
 ## License
 

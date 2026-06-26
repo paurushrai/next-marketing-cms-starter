@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # Only GitHub Actions are automated here. npm version updates are intentionally
+  # omitted: Dependabot's npm registry mirror is stale for this stack (it cannot
+  # resolve current @types/* versions, so every lockfile regen fails). npm
+  # security is covered by the `pnpm audit` gate in CI; bump npm deps manually
+  # with `pnpm update` / `pnpm outdated`.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
