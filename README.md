@@ -1,11 +1,16 @@
 # next-marketing-cms-starter
 
+[![CI](https://github.com/paurushrai/next-marketing-cms-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/paurushrai/next-marketing-cms-starter/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+
 A scalable, CMS-driven marketing site starter built on **Next.js 16** (App
 Router), **React 19**, **TypeScript**, and **Tailwind CSS v4**. Architected so a
 content-heavy marketing site scales to **20k+ pages** without ballooning build
 times or locking you to a single CMS.
 
 > Click **“Use this template”** on GitHub to start a new repo from this one.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fpaurushrai%2Fnext-marketing-cms-starter&env=NEXT_PUBLIC_SITE_URL,REVALIDATE_SECRET,DRAFT_SECRET,PAYLOAD_SECRET,DATABASE_URI&envDescription=Site%20URL%2C%20webhook%2Fpreview%20secrets%2C%20and%20Payload%20CMS%20credentials&envLink=https%3A%2F%2Fgithub.com%2Fpaurushrai%2Fnext-marketing-cms-starter%23environment)
 
 ## Why this template
 
@@ -91,8 +96,18 @@ interface, point `src/lib/cms/index.ts` at it, and run it through the
 ## Deployment
 
 Optimised for [Vercel](https://vercel.com) (Cache Components, ISR, and sharded
-sitemaps work out of the box). Any Node.js host that supports Next.js 16 also
-works. Set the environment variables above in your host.
+sitemaps work out of the box) — use the **Deploy with Vercel** button above, or
+`vercel deploy`. Any Node.js host that supports Next.js 16 also works. Set the
+environment variables above in your host.
+
+## Dependency security
+
+`pnpm audit` reports clean. A few transitive advisories live inside Payload
+CMS's dependency tree (e.g. `undici`, `dompurify`, `postcss`) and are
+force-patched via `pnpm.overrides` in [`package.json`](./package.json) without
+crossing major versions. When an upstream Payload release ships the fix, drop
+the matching override and re-run `pnpm audit`. CI gates lint, types, tests, and
+build on every PR.
 
 ## License
 

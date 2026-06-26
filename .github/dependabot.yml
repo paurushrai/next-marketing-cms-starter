@@ -6,7 +6,22 @@ updates:
       interval: weekly
     open-pull-requests-limit: 10
     groups:
-      # Batch low-risk updates into single PRs to cut review noise.
+      # Keep React and its @types in lockstep. Splitting them across the
+      # dev/prod groups let @types/react bump ahead of react, which fails
+      # dependabot's resolver (ERR_PNPM_NO_MATCHING_VERSION). Pattern groups
+      # are matched before the dependency-type groups below.
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      # Payload is a single coordinated release train; bump its packages together.
+      payload:
+        patterns:
+          - "payload"
+          - "@payloadcms/*"
+      # Batch the remaining low-risk updates to cut review noise.
       dev-dependencies:
         dependency-type: development
       production-dependencies:
