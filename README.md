@@ -109,6 +109,13 @@ crossing major versions. When an upstream Payload release ships the fix, drop
 the matching override and re-run `pnpm audit`. CI gates lint, types, tests, and
 build on every PR.
 
+Dependencies (npm and GitHub Actions) are kept current by
+[Renovate](https://docs.renovatebot.com) — see [`renovate.json`](./renovate.json).
+React and its `@types` are grouped so they bump atomically, and Payload's
+packages move as one. Install the
+[Renovate GitHub App](https://github.com/apps/renovate) on the repo to activate
+it.
+
 ## License
 
 [MIT](./LICENSE) © Paurush Rai
