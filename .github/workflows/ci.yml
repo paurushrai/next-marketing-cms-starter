@@ -29,6 +29,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Fail the build on any high/critical advisory. Replaces Dependabot's npm
+      # security PRs, whose registry mirror is too stale to resolve this stack.
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=high
+
       - name: Lint
         run: pnpm lint
 
