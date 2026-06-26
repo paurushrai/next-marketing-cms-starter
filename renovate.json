@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "semanticCommitScope": "deps",
+  "timezone": "Etc/UTC",
+  "schedule": ["before 6am on monday"],
+  "prConcurrentLimit": 10,
+  "dependencyDashboard": true,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "packageRules": [
+    {
+      "description": "React and its @types must move together or the resolver breaks.",
+      "groupName": "react",
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ]
+    },
+    {
+      "description": "Payload ships as a single coordinated release train.",
+      "groupName": "payload",
+      "matchPackageNames": ["payload", "/^@payloadcms\\//"]
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"]
+  },
+  "osvVulnerabilityAlerts": true
+}
