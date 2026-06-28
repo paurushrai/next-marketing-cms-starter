@@ -4,7 +4,7 @@ test.describe("home page", () => {
   test("renders the hero and primary navigation", async ({ page }) => {
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { level: 1, name: "Home" }),
+      page.getByRole("heading", { level: 1, name: "UI Component Library" }),
     ).toBeVisible();
     for (const label of ["About", "Pricing", "Blog", "Contact"]) {
       await expect(page.getByRole("link", { name: label })).toBeVisible();
